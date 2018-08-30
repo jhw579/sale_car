@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>汽车档案</title>
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <link href="css/style.css" rel="stylesheet">
+    <style type="text/css">
+    </style>
+</head>
+
+<body>
+    <nav class="navbar navbar-default">
+        <div class="container-fluid">
+            <!-- Brand and toggle get grouped for better mobile display -->
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1"
+                    aria-expanded="false">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="#">租车管理系统</a>
+            </div>
+
+            <!-- Collect the nav links, forms, and other content for toggling -->
+            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                <ul class="nav navbar-nav">
+                    <li>
+                        <a href="/index">客人查询</a>
+                    </li>
+                    <li>
+                        <a href="/zulin">租赁登记</a>
+                    </li>
+                    <li>
+                        <a href="/guihuan">归还登记</a>
+                    </li>
+                    <li>
+                        <a href="/tongji">统计分析</a>
+                    </li>
+                    <li>
+                        <a href="/type">类别档案</a>
+                    </li>
+                    <li class="active">
+                        <a href="/archives">汽车档案</a>
+                    </li>
+                    <li>
+                        <a href="/tuichu">退出系统</a>
+                    </li>
+
+                </ul>
+                <ul class="nav navbar-nav navbar-right">
+                    <%
+                        if(!login){
+                        %>
+                        <li>
+                            <a href="/reg">注册</a>
+                        </li>
+                        <li>
+                            <a href="/">登陆</a>
+                        </li>
+                        <%
+                        }else{
+                        %>
+                            <li>
+                                <a href="#">
+                                    <%=name%>
+                                </a>
+                            </li>
+                            <%
+                        }
+                        %>
+                </ul>
+            </div>
+            <!-- /.navbar-collapse -->
+        </div>
+        <!-- /.container-fluid -->
+    </nav>
+
+    <div class="container" style="margin-top: 10px">
+        <button type="button" class="btn btn-primary btn-md" data-toggle="modal" data-target="#myModal">
+            增加
+        </button>
+
+        <!-- Modal -->
+        <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                        <h4 class="modal-title" id="myModalLabel">增加</h4>
+                    </div>
+                    <div class="modal-body">
+                        <form id="biaodan" action="/doadd" method="post">
+                            <p>行号
+                                <input type="text" name="id" />
+                            </p>
+                            <p>车的名称:
+                                <input type="text" name="name" />
+                            </p>
+                            <p>
+                                所属类型:
+                                <select name="typ">
+                                    <!-- <option value=""></option> -->
+                                </select>
+                                <!-- <input type="text" name="typ" /> -->
+                            </p>
+                            <p>
+                                租赁价格:
+                                <input type="text" name="zulin" />
+                            </p>
+                            <p>
+                                计量单位:
+                                <input type="text" name="danwei" value="天" disabled/>
+                            </p>
+                            <p>
+                                可租状态:
+                                <input type="text" name="state" value="未租出" disabled/>
+                            </p>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-primary" id="btn">ok</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <button type="button" class="btn btn-primary btn-md" data-toggle="modal" data-target="#myModal1" id="update">
+            修改
+        </button>
+
+        <!-- Modal -->
+        <div class="modal fade" id="myModal1" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                        <h4 class="modal-title" id="myModalLabel">编辑员工</h4>
+                    </div>
+                    <div class="modal-body">
+                        <form id="biaodan2" action="/doadd" method="post">
+                            <p>行号
+                                <input type="text" name="id" id="id" disabled/>
+                            </p>
+                            <p>车的名字:
+                                <input type="text" name="names" id="name" />
+                            </p>
+                            <p>
+                                所属类型:
+                                <select id="s2" name="typs">
+                                    <!-- <option value=""></option> -->
+                                </select>
+                                <!-- <input type="text" name="typ" /> -->
+                            </p>
+                            <!-- <p>
+                                车的类型:
+                                <input type="text" name="typs" />
+                            </p> -->
+                            <p>
+                                租赁价格:
+                                <input type="text" name="zulins" />
+                            </p>
+                            <p>
+                                计量单位:
+                                <input type="text" name="danweis" value="天" disabled/>
+                            </p>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-primary" id="ok">ok</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <button type="button" class="btn btn-danger btn-md" data-toggle="modal" data-target="#myModal4">
+            删除
+        </button>
+
+        <!-- Modal -->
+        <div class="modal fade" id="myModal4" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                        <h4 class="modal-title" id="myModalLabel">删除员工</h4>
+                    </div>
+                    <div class="modal-body">
+                        <p>真的要删除?</p>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-primary shan  ">ok</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <table class="table  table-striped navbar-default" style="margin-top: 50px">
+            <tr>
+                <th></th>
+                <th>行号</th>
+                <th>车的名称</th>
+                <th>所属类型</th>
+                <th>租赁价格</th>
+                <th>所属单位</th>
+                <th>可租状态</th>
+            </tr>
+
+            <tbody id="tbody"></tbody>
+
+        </table>
+        <div id="pagenavbox"></div>
+    </div>
+
+
+    <script src="js/jquery-1.12.3.min.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="js/PageNav.js"></script>
+    <script>
+        //退出
+        $("#tui").click(function () {
+            $.get("/tuichu", function (data) {
+                alert("成功");
+                window.location = "/";
+            })
+        })
+
+        //添加
+        $("#btn").click(function () {
+            $.post("/doaddcar", {
+                id: parseInt($("input[name=id]").val()),
+                name: $("input[name=name]").val(),
+                typ: $("select").val(),
+                zulin: $("input[name=zulin]").val(),
+                danwei: $("input[name=danwei]").val(),
+                state:$("input[name=state]").val(),
+            }, function (data) {
+                console.log(data.result);
+                if (data.result == 1) {
+                    alert("提交成功！");
+                    window.location.href = '/archives';
+                    $("input[type=text]").val("");
+                } else if (data.result == -1) {
+                    alert("提交失败，学号被占用！");
+                } else if (data.result == -2) {
+                    alert("服务器错误！请联系管理员，怎么联系我也不知道！");
+                }
+            })
+        });
+
+        //删除
+        $("#tbody").delegate(".delbtn", "click", function () {
+            $(".shan").click(function () {
+                $(this).modal('hide');
+                var id = $("input[name=timu]:checked").attr("data-id");
+                var $this = $(this);
+                $.ajax({
+                    url: "/doaddcar/" + id,
+                    type: "delete",
+                    success: function (data) {
+                        if (data.result == 1) {
+                            alert("删除成功");
+                            $this.parents("tr").remove();
+                            window.location.href = '/archives'
+                        } else {
+                            alert("服务器错误！");
+                        }
+                    }
+                });
+            })
+        })
+
+        //修改
+        $("#update").click(function () {
+            if ($("input[name=id]:checked").length == 0) {
+                var This = $("input[name=timu]:checked").parents().children();
+                // console.log($(This).eq(2).html());
+                var id = $(This).eq(2).html();
+                $.get("/car/" + id, function (data) {
+                    console.log(data.result)
+                    if (data.result == -1) {
+                        alert("查无此人")
+                    } else {
+                        $("input[name=id]").val(data.result.id);
+                        $("input[name=names]").val(data.result.name);
+                        $("#s2").val(data.result.typ);
+                        $("input[name=zulins]").val(data.result.zulin);
+                        $("input[name=danweis]").val(data.result.danwei);
+                    }
+                })
+            }
+        })
+
+        $("#ok").click(function () {
+            var id = parseInt($("input[name=id]").val());
+            $.post("/car/" + id, {
+                names: $("input[name=names]").val(),
+                typs: $("#s2").val(),
+                zulins: $("input[name=zulins]").val(),
+                danweis: $("input[name=danweis]").val(),
+            }, function (data) {
+                if (data.result == 1) {
+                    alert("修改成功！");
+                    window.location = "/archives";
+                } else {
+                    alert("服务器错误！请联系管理员，怎么联系我也不知道！");
+                }
+            })
+        })
+
+
+
+
+
+
+
+        //分页
+        $.get("/doaddcar?page=1", function (data) {
+            //分页条
+            new PageNav({
+                boxid: "pagenavbox",
+                page: 1,
+                pageAmount: data.pageAmount,
+                change: function (pagenumber) {
+                    gotopage(pagenumber);
+                }
+            });
+            gotopage(1);
+        });
+        $.get('/getAllcartype', function (data) {
+            $.each(data.results, function (i, n) {
+                // alert(n.name)
+                $("<option value=" + n.name + " name=" + 'typ' + "></option>").html(n.name).appendTo($('select'));
+            });
+        })
+        function gotopage(pagenumber) {
+            $("#tbody").empty();
+            $.get("/doaddcar?page=" + pagenumber, function (data) {
+                $.each(data.results, function (i, n) {
+                    $tr = $("<tr class='shows'></tr>");
+                    $("<td><input type='radio' class='delbtn show' name='timu' data-id='" + n.id + "'/></td>").appendTo($tr);
+                    $("<td></td>").html(n.id).appendTo($tr);
+                    $("<td></td>").html(n.name).appendTo($tr);
+
+                    $("<td></td>").html(n.typ).appendTo($tr);
+
+                    $("<td></td>").html(n.zulin).appendTo($tr);
+                    $("<td></td>").html(n.danwei).appendTo($tr);
+                    $("<td></td>").html(n.state).appendTo($tr);
+                    $tr.appendTo($("#tbody"));
+                });
+            });
+        }
+
+
+    </script>
+
+</body>
+
+</html>

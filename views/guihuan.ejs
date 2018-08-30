@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>归还登记</title>
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <link href="css/style.css" rel="stylesheet">
+    <style type="text/css">
+        * {
+            padding: 0;
+            margin: 0;
+            list-style: none;
+        }
+
+        html {
+            width: 100%;
+            height: 100%;
+        }
+
+        body {
+            position: relative;
+        }
+
+        .uls {
+            position: absolute;
+            top: 112px;
+            left: 218px;
+            width: 9%;
+            border: 1px solid #eee;
+        }
+
+        .uls li {
+            width: 100%;
+            height: 30px;
+            line-height: 30px;
+            text-align: center;
+            cursor: pointer;
+            /* background: #eee; */
+        }
+
+        .uls li.active {
+            background: #eee;
+        }
+
+        .add-model {
+            /* position: absolute; */
+            width: 1141px;
+            height: 190px;
+            margin-top: 70px;
+            margin-left: 385px;
+            border: 1px solid #eee;
+            /* margin-left:100px; */
+            padding: 20px;
+        }
+
+        #biaodan {
+            width: 83%;
+            float: left;
+
+        }
+
+        #biaodan input {
+            margin-bottom: 20px;
+        }
+
+        .b {
+            width: 10%;
+            float: right;
+        }
+    </style>
+</head>
+
+<body>
+    <nav class="navbar navbar-default">
+        <div class="container-fluid">
+            <!-- Brand and toggle get grouped for better mobile display -->
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1"
+                    aria-expanded="false">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="#">租车管理系统</a>
+            </div>
+
+            <!-- Collect the nav links, forms, and other content for toggling -->
+            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                <ul class="nav navbar-nav">
+                    <li>
+                        <a href="/index">客人查询</a>
+                    </li>
+                    <li>
+                        <a href="/zulin">租赁登记</a>
+                    </li>
+                    <li class="active">
+                        <a href="/guihuan">归还登记</a>
+                    </li>
+                    <li>
+                        <a href="/tongji">统计分析</a>
+                    </li>
+                    <li>
+                        <a href="/type">类别档案</a>
+                    </li>
+                    <li>
+                        <a href="/archives">汽车档案</a>
+                    </li>
+                    <li>
+                        <a href="/tuichu">退出系统</a>
+                    </li>
+
+                </ul>
+                <ul class="nav navbar-nav navbar-right">
+                    <%
+                        if(!login){
+                        %>
+                        <li>
+                            <a href="/reg">注册</a>
+                        </li>
+                        <li>
+                            <a href="/">登陆</a>
+                        </li>
+                        <%
+                        }else{
+                        %>
+                            <li>
+                                <a href="#">
+                                    <%=name%>
+                                </a>
+                            </li>
+                            <%
+                        }
+                        %>
+                </ul>
+            </div>
+            <!-- /.navbar-collapse -->
+        </div>
+        <!-- /.container-fluid -->
+    </nav>
+
+    <div class="container" style="margin-top: 10px">
+        <table class="table  navbar-default" style="margin-top: 50px">
+            <tr>
+                <th></th>
+                <th>行号</th>
+                <th>租赁人</th>
+                <th>租赁名称</th>
+                <th>租赁时长</th>
+                <th>每天价格</th>
+                <th>已付押金</th>
+                <th>应付金额</th>
+            </tr>
+
+            <tbody id="tbody"></tbody>
+
+        </table>
+        <div id="pagenavbox"></div>
+
+    </div>
+    <div class="add-model">
+        <form id="biaodan" action="/doadd" method="post">
+            <!-- 行号&nbsp;&nbsp;&nbsp;
+            <input type="text" name="id" /> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; -->
+            已付押金&nbsp;&nbsp;&nbsp;
+            <input type="text" name="yajin" id="num" min="1" /> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            应付金额:&nbsp;&nbsp;&nbsp;
+            <input type="text" name="jine" /> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            找零金额:&nbsp;&nbsp;&nbsp;
+            <input type="text" name="zhaoling" id="heji" /> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        </form>
+        <div class="b">
+            <button id="btn">确定归还</button>
+            <br>
+            <br>
+            <button>&nbsp;&nbsp;&nbsp;&nbsp;退出&nbsp;&nbsp;&nbsp;&nbsp;</button>
+        </div>
+    </div>
+    <!-- <div class="list"> -->
+
+    <!-- </div> -->
+
+
+    <script src="js/jquery-1.12.3.min.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="js/PageNav.js"></script>
+    <script>
+        //退出
+        $("#tui").click(function () {
+            $.get("/tuichu", function (data) {
+                alert("成功");
+                window.location = "/";
+            })
+        })
+        // 获取
+        $("#tbody").on('click', '.show', function () {
+            if ($("input[name=id]:checked").length == 0) {
+                var This = $("input[name=timu]:checked").parents().children();
+
+                var yajin = $(This).eq(7).html();
+                $("input[name=yajin]").val(yajin);
+
+                var jine = $(This).eq(8).html();
+                $("input[name=jine]").val(jine);
+
+                var zhaoling = jine - yajin;
+                $("input[name=zhaoling]").val(zhaoling);
+            }
+        })
+
+        //分页
+        $.get("/getAllguihuan?page=1", function (data) {
+            new PageNav({
+                boxid: "pagenavbox",
+                page: 1,
+                pageAmount: data.pageAmount,
+                change: function (pagenumber) {
+                    gotopage(pagenumber);
+                }
+            });
+            gotopage(1);
+        });
+        function gotopage(pagenumber) {
+            $("#tbody").empty();
+            $.get("/getAllguihuan?page=" + pagenumber, function (data) {
+                $.each(data.results, function (i, n) {
+                    $tr = $("<tr class='shows'></tr>");
+                    $("<td><input type='radio' class='delbtn show' name='timu' data-id='" + n.id + "'/></td>").appendTo($tr);
+                    $("<td id='ids'></td>").html(n.id).appendTo($tr);
+                    $("<td id='xuanzes'></td>").html(n.xuanze).appendTo($tr);
+                    $("<td id='names'></td>").html(n.name).appendTo($tr);
+                    $("<td id='times'></td>").html(n.time).appendTo($tr);
+                    $("<td id='zujins'></td>").html(n.zujin).appendTo($tr);
+                    $("<td id='hejis'></td>").html(n.heji).appendTo($tr);
+                    $("<td id='heji2s'></td>").html(n.heji).appendTo($tr);
+                    $tr.appendTo($("#tbody"));
+                });
+            });
+        }
+
+
+        $("#btn").click(function () {
+            if ($("input[name=id]:checked").length == 0) {
+                var This = $("input[name=timu]:checked").parents().children();
+                var id = This.eq(2).html()
+                var _this = $(this);
+                var sta = '未租出';
+                $.post("/stategh/" + id, {
+                    state: sta
+                }, function (data) {
+                    console.log(data);
+                    if (data.result == 1) {
+                        // alert("修改成功！");
+                    } else {
+                        alert("服务器错误！请联系管理员，怎么联系我也不知道！");
+                    }
+                })
+                console.log(id)
+                $.post("/doaddguihuan", {
+                    id: id,
+                    xuanze: This.eq(3).html(),
+                    name: This.eq(4).html(),
+                    time: This.eq(5).html(),
+                    zujin: This.eq(6).html(),
+                    heji: This.eq(7).html(),
+                    heji2: This.eq(8).html(),
+                }, function (data) {
+                    console.log(data.result)
+                    if (data.result == 1) {
+                        alert("提交成功！");
+                        // window.location.href = '/tongji';
+                        $("input[type=text]").val("");
+                    } else if (data.result == -1) {
+                        alert("提交失败，学号被占用！");
+                    } else if (data.result == -2) {
+                        alert("服务器错误！请联系管理员，怎么联系我也不知道！");
+                    }
+
+                })
+                $.ajax({
+                    url: "/delet/" + id,
+                    type: "delete",
+                    success: function (data) {
+                        if (data.result == 1) {
+
+                        } else {
+                            alert("服务器错误！");
+                        }
+                    }
+                });
+
+            }
+
+
+
+
+        });
+
+
+
+    </script>
+
+</body>
+
+</html>

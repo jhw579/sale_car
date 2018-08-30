@@ -1,0 +1,22 @@
+数据库:car
+          mongoose.connect('mongodb://localhost/car');
+
+
+1、admin.js---用户(管理员)信息表（id+用户名+密码）
+2、 user.js---客户表（id+客户姓名+电话+住址+身份证号码+驾驶证号码）
+3、car-type.js---汽车类别表（id+汽车类型）
+4、car-archives.js---汽车档案表（id+租赁名称+汽车类型+租赁价格）
+5、car-lease.js---汽车租赁表（id+租赁名称+租赁人+时长+每天租金+合计+日期+经办人）
+6、car-back.js---汽车归还表（id+租赁名称+租赁人+实收金额+找零+日期+经办人）
+
+
+
+1.管理员注册账号---管理员登入系统---客人信息页面查询 admin.js---admin(登录,注册)
+2.客人信息页面查询---录入客人信息(增删改查)  user.js---user
+3.类别档案---对汽车类别的添加与修改  car-type.js---type
+4.汽车档案---汽车信息的管理  car-archives.js---archives
+5.租赁登记---租赁汽车信息的管理 car-lease.js---lease
+6.统计分析---汽车租赁统计+汽车归还统计
+7.归还登记---对汽车归还的登记 car-return.js--back
+8.百度echarts数据展示
+
